@@ -1,0 +1,268 @@
+% define the functions
+syms f1(x);
+syms f2(x);
+syms f3(x);
+f1(x) = (x-1)^3 + ((x-4)^2) * cos(x);
+f2(x) = exp(-2*x) + (x-2)^2;
+f3(x) = x^2 * log(0.5 * x) + (sin(0.2 * x))^2;
+
+
+%{
+% Plot the function over the initial interval
+x = linspace(0, 3, 1000);
+y = f1(x);
+figure(1);
+plot(x, y);
+xlabel('x');
+ylabel('f1(x)');
+title('Plot of the function f1(x)');
+
+% Plot the function over the initial interval
+x = linspace(0, 3, 1000);
+y = f2(x);
+figure(2);
+plot(x, y);
+xlabel('x');
+ylabel('f2(x)');
+title('Plot of the function f2(x)');
+
+% Plot the function over the initial interval
+x = linspace(0, 3, 1000);
+y = f3(x);
+figure(3);
+plot(x, y);
+xlabel('x');
+ylabel('f3(x)');
+title('Plot of the function f3(x)');
+
+%}
+
+% To run the bisection method for different values of e with constant l
+% uncomment the following 
+
+
+%{
+a(1) = 0;
+b(1) = 3;
+l = 0.01;
+% 2e < l -> e_max = l/2 - step
+epsilon = 0.0001:0.0001:0.0049;
+% Initialize arrays to store the results.
+minimum_values = zeros(size(epsilon));
+min_values = zeros(size(epsilon));
+iteration_counts = zeros(size(epsilon));
+
+% Loop through each epsilon value.
+for i = 1:length(epsilon)
+    e = epsilon(i);
+    
+    % Call the bisection_algorithm function with the current epsilon.
+    [minimum, min_value, iterations] = bisection_algorithm(f3, a, b, e, l); % Make sure 'l' is defined appropriately.
+    
+    % Store the results in the arrays.
+    minimum_values(i) = minimum;
+    min_values(i) = min_value;
+    iteration_counts(i) = iterations;
+    % print the results 
+    fprintf('Bisection Method : ');
+    fprintf('for epsilon = %.4f: Minimum = %.4f, Min Value = %.4f, Iterations = %d\n', e, minimum, min_value, iterations);
+end
+
+% Plot for how the number of iterations is being changed with e
+figure(4);
+plot(epsilon,iteration_counts);
+xlabel("\epsilon");
+ylabel("Iterations")
+
+title('Number of Iterations vs. \epsilon for f_3(x)');
+
+
+
+%
+% run the bisection method for different values of l and same e
+a(1) = 0;
+b(1) = 3;
+e = 0.001;
+%
+l_table = 0.003:0.001:0.1;
+% Initialize arrays to store the results.
+minimum_values = zeros(size(l_table));
+min_values = zeros(size(l_table));
+iteration_counts = zeros(size(l_table));
+
+% Loop through each epsilon value.
+for i = 1:length(l_table)
+    l = l_table(i);
+    
+    % Call the bisection_algorithm function with the current epsilon.
+    [minimum, min_value, iterations] = bisection_algorithm(f3, a, b, e, l); 
+    
+    % Store the results in the arrays.
+    minimum_values(i) = minimum;
+    min_values(i) = min_value;
+    iteration_counts(i) = iterations;
+    % print the results 
+    fprintf('Bisection Method');
+    fprintf('For l = %.4f: Minimum = %.4f, Min Value = %.4f, Iterations = %d\n', l, minimum, min_value, iterations);
+end
+
+% Plot for how the number of iterations is being changed with l
+figure(4);
+plot(l_table,iteration_counts);
+xlabel("l");
+ylabel("Iterations")
+
+title('Number of Iterations vs. l for f_3(x)');
+%
+
+% run the Golden section method for different values of l 
+a = zeros(100,1);
+b = zeros(100,1);
+a(1) = 0;
+b(1) = 3;
+l_table = 0.001:0.001:0.1;
+% Initialize arrays to store the results.
+minimum_values = zeros(size(l_table));
+min_values = zeros(size(l_table));
+iteration_counts = zeros(size(l_table));
+
+
+for i = 1:length(l_table)
+    l = l_table(i);
+  
+    [minimum, min_value, iterations] = golden_section_method(f3, a, b, l); 
+    
+    % Store the results in the arrays.
+    minimum_values(i) = minimum;
+    min_values(i) = min_value;
+    iteration_counts(i) = iterations;
+    % print the results 
+    fprintf('Golden Ratio Method:');
+    fprintf('for l = %.4f: Minimum = %.4f, Min Value = %.4f, Iterations = %d\n', l, minimum, min_value, iterations);
+end
+
+
+% Plot for how the number of iterations is being changed with l
+figure(5);
+plot(l_table,iteration_counts);
+xlabel("l");
+ylabel("Iterations")
+
+title('Golden Ratio Method - Number of Iterations vs. l for f_3(x)');
+
+%}
+
+
+% run the Fibonacci method for different values of l 
+a = zeros(100,1);
+b = zeros(100,1);
+a(1) = 0;
+b(1) = 3;
+l_table = 0.01:0.001:0.1;
+% Initialize arrays to store the results.
+minimum_values = zeros(size(l_table));
+min_values = zeros(size(l_table));
+iteration_counts = zeros(size(l_table));
+
+
+for i = 1:length(l_table)
+    l = l_table(i);
+  
+    [minimum, min_value, iterations] =  fibonacci_method(f1, a, b, l); 
+    
+    % Store the results in the arrays.
+    minimum_values(i) = minimum;
+    min_values(i) = min_value;
+    iteration_counts(i) = iterations;
+    % print the results 
+    fprintf('Fibonacci Method: ');
+    fprintf('for l = %.4f: Minimum = %.4f, Min Value = %.4f, Iterations = %d\n', l, minimum, min_value, iterations);
+end
+
+
+% Plot for how the number of iterations is being changed with l
+figure(6);
+plot(l_table,iteration_counts);
+xlabel("l");
+ylabel("Iterations")
+
+title('Fibonacci Method - Number of Iterations vs. l for f_2(x)');
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+%{
+% Define your three functions f1, f2, and f3 here
+
+
+functions = {@f1, @f2};
+
+l_table = 0.01:0.001:0.1;
+% Initialize arrays to store the results
+minimum_values = zeros(size(l_table));
+min_values = zeros(size(l_table));
+iteration_counts = zeros(size(l_table));
+a = zeros(100,1);
+b = zeros(100,1);
+a(1) = 0;
+b(1) = 3;
+% Iterate through functions and precisions
+for i = 1:2
+    for j = 1:length(l_table)
+        l = l_table(j);
+    
+        [minimum, min_value, iterations] = fibonacci_method(functions{i}, a, b, l); 
+    
+        % Store the results in the arrays.
+        minimum_values(i) = minimum;
+        min_values(i) = min_value;
+        iteration_counts(i) = iterations;
+    end
+end
+%{
+% Plot the number of iterations for all functions on the same plot
+figure;
+hold on;
+for i = 1:num_functions
+    plot(l_table, iteration_counts(i, :), 'DisplayName', function_names{i});
+end
+hold off;
+
+xlabel("l");
+ylabel("Iterations");
+title('Fibonacci Method - Number of Iterations vs. l');
+legend('Location', 'Best');
+
+% Customize the legend and add labels as needed
+%}
+
+
+
+
+
+% Define your function f1
+function f1_value = f1(x)
+    f1_value = (x - 1)^3 + (x - 4)^2 * cos(x);
+end
+
+% Define your function f1
+function f2_value = f2(x)
+    f2_value = exp(-2*x) + (x-2)^2;
+end
+
+
+%}
